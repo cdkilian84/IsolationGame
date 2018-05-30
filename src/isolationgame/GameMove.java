@@ -5,17 +5,13 @@
 package isolationgame;
 
 //simple class to hold the information about a move (for use in minimax algorithm)
-
-import java.util.Map;
-
 //Just holds row and column coordinates of a move, and the associated player
 public class GameMove {
     private int row;
     private int column;
     private BoardVals player;
-    private Map<String, Integer> rowMap; //maps values A-H to their respective integer values representing the rows
-    private Map<Integer, String> inverseRowMap; //does the opposite of rowMap (mainly for use in printing the board)
     
+    //Constructor building a new move object from passed row/column/player values
     public GameMove(int row, int column, BoardVals player){
         this.row = row;
         this.column = column;
@@ -29,10 +25,6 @@ public class GameMove {
         this.player = moveToCopy.getPlayer();
     }
     
-    //
-    public GameMove(){
-        
-    }
     
     //getters for the data held in this object
     //getter for row

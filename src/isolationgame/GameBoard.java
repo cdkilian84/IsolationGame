@@ -15,7 +15,6 @@ import java.util.Random;
 //player position is (for use by the minimax algorithm).
 public class GameBoard {
     private final int BOARD_DIMENSION = 8;
-    private int boardFreeSpaces;
     private Map<String, Integer> rowMap; //maps values A-H to their respective integer values representing the rows
     private Map<Integer, String> inverseRowMap; //does the opposite of rowMap (mainly for use in printing the board)
     private int[] playerX; //holds (row,column) coordinates for each player (for ease of access)
@@ -35,7 +34,6 @@ public class GameBoard {
         }else{
             initBlankBoard(BoardVals.PLAYER_X);
         }
-        boardFreeSpaces = (BOARD_DIMENSION * BOARD_DIMENSION) - 2; //all spaces are free except the two initial points occupied by the players
     }
     
     
@@ -374,7 +372,6 @@ public class GameBoard {
             playerX[1] = column;
             theBoard[row][column] = BoardVals.PLAYER_X;
         }
-        boardFreeSpaces--;
     }
     
     
@@ -484,10 +481,5 @@ public class GameBoard {
     public BoardVals[][] getTheBoard() {
         return theBoard;
     }
-    
-    
-//    public int getFreeSpaces(){
-//        return boardFreeSpaces;
-//    }
     
 }

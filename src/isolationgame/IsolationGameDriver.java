@@ -5,8 +5,6 @@
 package isolationgame;
 
 import java.io.Console;
-import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 
 //Driver for the isolation game, which handles the command line user interface and the tracking of game status
@@ -119,7 +117,7 @@ public class IsolationGameDriver {
                 System.out.println("Please format your entry as such: A2 (note the lack of space between the letter and number)");
                 System.out.println("To quit the game, type quit");
                 while(true){
-                    //basic second AI player
+                    //basic second AI player - uncomment this block (and comment out the user control block) to allow the AI to play against itself
 //                    System.out.println("Player O is thinking..");
 //                    AIPlayer playerO = new AIPlayer();
 //                    GameMove aiMove = playerO.getAIMove(theGame.getGameBoard(), BoardVals.PLAYER_O, timeLimit);
@@ -128,8 +126,7 @@ public class IsolationGameDriver {
 //                    if(theGame.processHumanTurn(aiRow, aiCol)){
 //                        break;
 //                    }
-                    
-                    
+                    //Player control block - comment this out (and uncomment the above section of code) to allow the AI to play against itself
                     String userInput;
                     userInput = console.readLine();
                     userInput = userInput.trim();
@@ -149,18 +146,14 @@ public class IsolationGameDriver {
                     }else{
                         System.out.println("Invalid entry, please try again.");
                     }
+                    //end of player control block
                 }
             }else{
                 System.out.println("Player X is thinking...");
-                //Instant instant = Instant.now();
-                //long startTime = instant.toEpochMilli();
                 boolean aiTurnResult = theGame.processAITurn();
-                //instant = Instant.now();
-                //long totalTime = instant.toEpochMilli() - startTime;
                 if(!aiTurnResult){
                     System.out.println("AI FAILURE");
                 }
-                //System.out.println("AI took " + totalTime + " milliseconds to make its move.");
             }
             
             //check if there is a winner yet
@@ -172,7 +165,7 @@ public class IsolationGameDriver {
         }
         
         for(int i = 0; i < 100; i++){
-            System.out.println(""); //fake clearing the screen - since Java lacks command line clearing support
+            System.out.println(""); //fake clearing the screen - since Java lacks command line clearing support in Windows 10
         }
         
         System.out.println("GAME OVER");

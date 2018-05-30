@@ -10,7 +10,6 @@ import java.util.Random;
 //Class implementing the AI player - this includes the minimax algorithm implementation with alpha-beta pruning and iterative deepening. It includes methods both
 //to simply find the next best move, and to implement that move in the current game.
 public class AIPlayer {
-    private int pruned = 0; //for stats collecting only
     
     //This method implements the minimax algorithm. The initial call to this state builds a list of all the possible moves from the provided (current)
     //game state, and manages the timer which will force a return when it runs out. The list of possible moves are iterated through with calls to "maxValue", which
@@ -24,7 +23,6 @@ public class AIPlayer {
         GameMove bestMove = possibleMoves.get(0); //default value - pick the first move available
         int maxDepth = 1; //to be iterated as the tree is searched
         int currentScore = Integer.MIN_VALUE;
-        pruned = 0; //for data collecting only
         
         while(!timer.isTimeElapsed()){ //search for the best move until time expires
             int alpha = Integer.MIN_VALUE;
@@ -38,7 +36,7 @@ public class AIPlayer {
                         currentScore = moveScore;
                     }else if(currentScore == moveScore){
                         Random rand = new Random();
-                        if(rand.nextDouble() > 0.5){ //injecting randomness into move selection - if a move has an equal score to the current score, 50/50 coinflip on which move to take
+                        if(rand.nextDouble() > 0.75){ //injecting randomness into move selection - if a move has an equal score to the current score, there is a 25% chance to accept the new move
                             bestMove = move;
                         }
                     }
@@ -56,12 +54,14 @@ public class AIPlayer {
             
             maxDepth++; //increment depth with every search iteration
             //System.out.println("Deepening search to depth " + maxDepth);
+            if(maxDepth > 200){
+                break; //stop iterating on depth after 200 - mainly for ending the search quickly in late-game circumstances with few possible moves
+            }
         }
         
         //System.out.println("final accepted score was " + currentScore);
         //System.out.println("Time elapsed was " + timer.getElapsedTime());
-        System.out.println("Final depth reached was " + maxDepth);
-        System.out.println("Number times pruned: " + pruned);
+        //System.out.println("Final depth reached was " + maxDepth);
         return bestMove;
     }
     
@@ -89,23 +89,19 @@ public class AIPlayer {
         }else{
             opponent = BoardVals.PLAYER_O;
         }
+        //"opponent" is THIS nodes mover - in other words, if Player X moved to get to "theBoard", now generate all possible moves for player O
         
         if(checkIfTerminalState(theBoard, depth) || timer.isTimeElapsed()){
             currentScore = theBoard.evaluatePlayerPosition(player);
-            //currentScore = theBoard.evaluatePlayerPosition(opponent);
         }else{
-            //List<GameMove> possibleMoves = theBoard.getPossibleMoves(player);
             List<GameMove> possibleMoves = theBoard.getPossibleMoves(opponent);
             for(GameMove move : possibleMoves){
                 if(!timer.isTimeElapsed()){
-                    //int minScore = minValue(new GameBoard(theBoard, player, move), player, (depth - 1), alpha, beta, timer);
                     int minScore = minValue(new GameBoard(theBoard, opponent, move), opponent, (depth - 1), alpha, beta, timer);
                     currentScore = Math.max(currentScore, minScore);
 
                     //pruning
                     if(currentScore >= beta){
-                        //System.out.println("PRUNING (in max)");
-                        pruned++;
                         break;
                     }
                     alpha = Math.max(alpha, currentScore);
@@ -133,20 +129,15 @@ public class AIPlayer {
         
         if(checkIfTerminalState(theBoard, depth) || timer.isTimeElapsed()){
             currentScore = theBoard.evaluatePlayerPosition(player);
-            //currentScore = theBoard.evaluatePlayerPosition(opponent);
         }else{
-            //List<GameMove> possibleMoves = theBoard.getPossibleMoves(player);
             List<GameMove> possibleMoves = theBoard.getPossibleMoves(opponent);
             for(GameMove move : possibleMoves){
                 if(!timer.isTimeElapsed()){
-                    //int maxScore = maxValue(new GameBoard(theBoard, player, move), player, (depth - 1), alpha, beta, timer);
                     int maxScore = maxValue(new GameBoard(theBoard, opponent, move), opponent, (depth - 1), alpha, beta, timer);
                     currentScore = Math.min(currentScore, maxScore);
 
                     //pruning
                     if(currentScore <= alpha){
-                        //System.out.println("PRUNING (in min)");
-                        pruned++;
                         break;
                     }
                     beta = Math.min(beta, currentScore);

@@ -4,11 +4,12 @@
 
 package isolationgame;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
 
+//Class which actually plays the isolation game using a given GameBoard object. Handles calling of player moves and tracking
+//of whose turn it is currently. Also manages game time limit.
 public class IsolationGame {
     private GameBoard theBoard;
     private long timeLimit;
