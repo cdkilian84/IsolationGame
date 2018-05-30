@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 //Class which implements the game board state - this includes the representation of the game board itself as a 2D array, and the various methods that can
 //act to change the game board state (moving a player, checking the move coordinates, etc). It also includes the evaluator method to evaluate how good a current
